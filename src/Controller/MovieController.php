@@ -25,4 +25,14 @@ class MovieController extends AbstractController
         }
         return $this->json($movie);
     }
+
+    #[Route('/movies/{id}/people', name: 'get_people_by_movie')]
+    public function getPeopleByMovie(MovieRepository $movieRepository, int $id): JsonResponse
+    {
+        $movie = $movieRepository->find($id);
+        if (!$movie){
+            return $this->json(['message' => "Movie not found"], 404);
+        }
+        return $this->json($movie->getMovieHasPeople());
+    }
 }

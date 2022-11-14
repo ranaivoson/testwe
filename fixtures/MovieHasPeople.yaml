@@ -1,0 +1,6 @@
+App\Entity\MovieHasPeople:
+  move_has_people{1..20}:
+    role: <randomElement(['actrice', 'acteur', 'réalisateur'])>
+    significance: <randomElement(['principal', 'secondaire'])>
+    movie: '@movie*'
+    people: '@people*'
