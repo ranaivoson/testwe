@@ -4,9 +4,13 @@ namespace App\Controller;
 
 use App\Entity\People;
 use App\Repository\PeopleRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class PeopleController extends AbstractController
 {
@@ -26,5 +30,18 @@ class PeopleController extends AbstractController
     public function getPersonMovies(People $people): JsonResponse
     {
         return $this->json($people->getMovieHasPeople());
+    }
+
+    #[Route('/people', name: 'post_people', methods: 'POST')]
+    #[IsGranted('ROLE_USER')]
+    public function postMovie(
+        Request             $request,
+        PeopleRepository    $peopleRepository,
+        SerializerInterface $serializer
+    ): JsonResponse
+    {
+        $people = $serializer->deserialize($request->getContent(), People::class, 'json');
+        $peopleRepository->save($people, true);
+        return $this->json($people, Response::HTTP_CREATED);
     }
 }
