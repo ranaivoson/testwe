@@ -2,12 +2,22 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\Movie;
+use App\Entity\MovieHasPeople;
+use App\Entity\People;
+use App\Repository\MovieHasPeopleRepository;
 use App\Repository\MovieRepository;
 use App\Repository\PeopleRepository;
 use App\Tests\AbstractTestCase;
 use Exception;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 use JsonException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class MovieControllerTest extends AbstractTestCase
 {
@@ -71,5 +81,27 @@ class MovieControllerTest extends AbstractTestCase
             ], JSON_THROW_ON_ERROR)
         );
         self::assertResponseStatusCodeSame(201);
+    }
+
+    /**
+     * @throws JsonException
+     * @throws Exception
+     */
+    public function testAddPeopleToMovie(): void
+    {
+        $client = $this->getConnectedClient();
+        $container = static::getContainer();
+
+        $movie = $container->get(MovieRepository::class)->findOneBy([]);
+        $people = $container->get(PeopleRepository::class)->findOneBy([]);
+
+        $client->request('PUT', '/movies/'. $movie->getId(). '/people/'. $people->getId(),
+            [],[], ['CONTENT_TYPE' => 'application/json'],
+            json_encode([
+                'role' => 'actrice',
+                'significance' => 'principal'
+            ], JSON_THROW_ON_ERROR)
+        );
+        self::assertResponseIsSuccessful();
     }
 }

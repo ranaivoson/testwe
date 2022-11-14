@@ -3,7 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
+use App\Entity\MovieHasPeople;
+use App\Entity\People;
+use App\Repository\MovieHasPeopleRepository;
 use App\Repository\MovieRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -52,5 +56,24 @@ class MovieController extends AbstractController
         $movie = $serializer->deserialize($request->getContent(), Movie::class, 'json');
         $movieRepository->save($movie, true);
         return $this->json($movie, Response::HTTP_CREATED);
+    }
+
+
+    #[Route('/movies/{movie_id}/people/{people_id}', name: 'put_people', methods: "PUT")]
+    #[Entity('movie', options: ['id'=> 'movie_id'])]
+    #[Entity('people', options: ['id'=> 'people_id'])]
+    #[IsGranted('ROLE_USER')]
+    public function addPeopleToMovie(
+        Request $request,
+        SerializerInterface $serializer,
+        MovieHasPeopleRepository $movieHasPeopleRepository,
+        Movie $movie, People $people
+    ): JsonResponse
+    {
+        $movieHasPeople = $serializer->deserialize($request->getContent(), MovieHasPeople::class, 'json');
+        $movieHasPeople->setMovie($movie);
+        $movieHasPeople->setPeople($people);
+        $movieHasPeopleRepository->save($movieHasPeople, true);
+        return $this->json([]);
     }
 }
