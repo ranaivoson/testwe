@@ -65,5 +65,6 @@ class PeopleControllerTest extends AbstractTestCase
         self::assertSame($array['lastname'], 'ranaivoson');
         self::assertSame($array['nationality'], 'malgache');
         self::assertSame($array['dateOfBirth'], '1989-03-10T00:00:00+00:00');
+        self::assertArrayHasKey('id', $array);
     }
 }

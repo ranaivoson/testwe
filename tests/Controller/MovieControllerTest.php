@@ -70,7 +70,13 @@ class MovieControllerTest extends AbstractTestCase
                 'duration' => 145
             ], JSON_THROW_ON_ERROR)
         );
+
+        $content = $client->getResponse()->getContent();
+        $array = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
         self::assertResponseStatusCodeSame(201);
+        self::assertSame($array['title'], 'test create');
+        self::assertSame($array['duration'], 145);
+        self::assertArrayHasKey('id', $array);
     }
 
     /**
