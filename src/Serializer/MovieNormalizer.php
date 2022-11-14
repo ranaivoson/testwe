@@ -28,6 +28,13 @@ class MovieNormalizer implements NormalizerInterface
             'id' => $object->getId()
         ]);
 
+        /** @var Type $type */
+        foreach ($object->getTypes() as $type) {
+            $data['types'][] = $this->router->generate('get_type', [
+                'id' => $type->getId()
+            ]);
+        }
+
         return $data;
     }
 
