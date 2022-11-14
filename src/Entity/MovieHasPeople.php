@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\MovieHasPeopleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use RuntimeException;
 use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: MovieHasPeopleRepository::class)]
@@ -80,8 +81,8 @@ class MovieHasPeople
 
     public function setSignificance(?string $significance): self
     {
-        if (!in_array($significance, self::ENUM_SIGNIFICANCE, true)){
-            throw new \RuntimeException('Significance should be : '. implode(' - ',self::ENUM_SIGNIFICANCE));
+        if (!is_null($significance) && !in_array($significance, self::ENUM_SIGNIFICANCE, true)){
+            throw new RuntimeException('Significance should be : '. implode(' - ',self::ENUM_SIGNIFICANCE));
         }
 
         $this->significance = $significance;

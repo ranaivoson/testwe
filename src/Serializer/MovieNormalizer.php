@@ -17,9 +17,9 @@ class MovieNormalizer implements NormalizerInterface
 {
 
     public function __construct(
-        private UrlGeneratorInterface $router,
-        private ObjectNormalizer      $normalizer,
-        private RapidApiMovie $apiMovie
+        private readonly UrlGeneratorInterface $router,
+        private readonly ObjectNormalizer      $normalizer,
+        private readonly RapidApiMovie $apiMovie
     )
     {
     }
