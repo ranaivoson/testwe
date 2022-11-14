@@ -12,10 +12,10 @@ class RapidApiMovie implements ApiMovieInterface
     public const URL = 'https://imdb8.p.rapidapi.com';
 
     public function __construct(
-        private string $xkey,
-        private string $host,
+        private readonly string              $xKey,
+        private readonly string              $host,
         private readonly HttpClientInterface $httpClient,
-        private readonly CacheInterface $cache
+        private readonly CacheInterface      $cache
     )
     {
     }
@@ -31,8 +31,8 @@ class RapidApiMovie implements ApiMovieInterface
                     'q' => $movie->getTitle()
                 ],
                 'headers' => [
-                    'X-RapidAPI-Key' => '754237601amsh09f935cdb5ffcbfp1d2043jsn05080faa1d70',
-                    'X-RapidAPI-Host' => 'imdb8.p.rapidapi.com'
+                    'X-RapidAPI-Key' => $this->xKey,
+                    'X-RapidAPI-Host' => $this->host
                 ],
             ]);
 

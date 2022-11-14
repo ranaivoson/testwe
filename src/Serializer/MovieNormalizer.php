@@ -44,7 +44,6 @@ class MovieNormalizer implements NormalizerInterface
         }
 
         $data['url'] = $this->apiMovie->getMovieUrl($object);
-        dd($data);
 
         return $data;
     }
