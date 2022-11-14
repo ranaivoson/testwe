@@ -4,10 +4,11 @@ namespace App\Serializer;
 
 use App\Entity\MovieHasPeople;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class MovieHasPeopleNormalizer implements NormalizerInterface
+class MovieHasPeopleNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     public function __construct(
         private readonly UrlGeneratorInterface $router,
@@ -33,5 +34,10 @@ class MovieHasPeopleNormalizer implements NormalizerInterface
     public function supportsNormalization(mixed $data, string $format = null): bool
     {
         return $data instanceof MovieHasPeople;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }

@@ -4,10 +4,11 @@ namespace App\Serializer;
 
 use App\Entity\People;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class PeopleNormalizer implements NormalizerInterface
+class PeopleNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     public function __construct(
         private readonly UrlGeneratorInterface $router,
@@ -30,5 +31,10 @@ class PeopleNormalizer implements NormalizerInterface
     public function supportsNormalization(mixed $data, string $format = null): bool
     {
         return $data instanceof People;
+    }
+
+    public function hasCacheableSupportsMethod(): bool
+    {
+        return true;
     }
 }
