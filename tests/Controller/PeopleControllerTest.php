@@ -4,6 +4,7 @@ namespace App\Tests\Controller;
 
 use App\Repository\PeopleRepository;
 use App\Tests\AbstractTestCase;
+use Exception;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 
 class PeopleControllerTest extends AbstractTestCase
@@ -23,6 +24,20 @@ class PeopleControllerTest extends AbstractTestCase
         $container = static::getContainer();
         $people = $container->get(PeopleRepository::class)->findOneBy([]);
         $client->request('GET', '/people/'. $people->getId());
+        self::assertResponseIsSuccessful();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testGetMovieByPeople():void
+    {
+        $client = static::createClient();
+        $container = static::getContainer();
+
+        $people = $container->get(PeopleRepository::class)->findOneBy([]);
+
+        $client->request('GET', '/people/'. $people->getId() . '/movies');
         self::assertResponseIsSuccessful();
     }
 }

@@ -21,4 +21,10 @@ class PeopleController extends AbstractController
     {
         return $this->json($people);
     }
+
+    #[Route('/people/{id}/movies', name: 'get_movies_by_person', methods: "GET")]
+    public function getPersonMovies(People $people): JsonResponse
+    {
+        return $this->json($people->getMovieHasPeople());
+    }
 }
