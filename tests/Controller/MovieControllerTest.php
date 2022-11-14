@@ -2,22 +2,12 @@
 
 namespace App\Tests\Controller;
 
-use App\Entity\Movie;
-use App\Entity\MovieHasPeople;
-use App\Entity\People;
-use App\Repository\MovieHasPeopleRepository;
 use App\Repository\MovieRepository;
 use App\Repository\PeopleRepository;
 use App\Tests\AbstractTestCase;
 use Exception;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 use JsonException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class MovieControllerTest extends AbstractTestCase
 {

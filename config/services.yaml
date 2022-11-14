@@ -28,3 +28,9 @@ services:
 
     App\DataFixtures\Providers\HashPasswordProvider:
         tags: [ { name: nelmio_alice.faker.provider } ]
+
+    App\Serializer\MovieHasPeopleNormalizer:
+        tags: [ 'serializer.normalizer' ]
+
+    App\Serializer\PeopleNormalizer:
+        tags: [ 'serializer.normalizer' ]
