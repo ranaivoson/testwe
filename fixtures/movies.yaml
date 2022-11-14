@@ -1,0 +1,4 @@
+App\Entity\Movie:
+  movie{1_10}:
+    title: <title()>
+    duration: <numberBetween(60, 200)>
