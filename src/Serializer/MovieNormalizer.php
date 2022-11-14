@@ -2,11 +2,14 @@
 
 namespace App\Serializer;
 
-use App\API\ApiInterface;
+use App\Api\ApiMovieInterface;
+use App\Api\RapidApiMovie;
 use App\Entity\Movie;
 use App\Entity\Type;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
@@ -16,10 +19,15 @@ class MovieNormalizer implements NormalizerInterface
     public function __construct(
         private UrlGeneratorInterface $router,
         private ObjectNormalizer      $normalizer,
+        private RapidApiMovie $apiMovie
     )
     {
     }
 
+    /**
+     * @throws ExceptionInterface
+     * @throws InvalidArgumentException
+     */
     public function normalize(mixed $object, string $format = null, array $context = [])
     {
         $data = $this->normalizer->normalize($object, $format, $context);
@@ -34,6 +42,9 @@ class MovieNormalizer implements NormalizerInterface
                 'id' => $type->getId()
             ]);
         }
+
+        $data['url'] = $this->apiMovie->getMovieUrl($object);
+        dd($data);
 
         return $data;
     }

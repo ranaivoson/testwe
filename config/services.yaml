@@ -34,3 +34,8 @@ services:
 
     App\Serializer\PeopleNormalizer:
         tags: [ 'serializer.normalizer' ]
+
+    App\Api\RapidApiMovie:
+        arguments:
+            $xkey: '%env(RAPIDAPI_XKEY)%)'
+            $host: '%env(RAPIDAPI_HOST)%)'
