@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  api:
+    build: ./
+    volumes:
+      - /var/www/html/vendor
+      - ./:/var/www/html
+    ports:
+      - '80:80'
+  mysql:
+    image: 'mysql:8.0'
+    volumes:
+      - ./build/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: testwe
+    ports:
+      - '30306:3306'
