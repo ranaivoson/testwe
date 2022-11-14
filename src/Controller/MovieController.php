@@ -40,4 +40,17 @@ class MovieController extends AbstractController
         }
         return $this->json($movie->getMovieHasPeople());
     }
+
+    #[Route('/movies', name: 'post_movie', methods: 'POST')]
+    #[IsGranted('ROLE_USER')]
+    public function postMovie(
+        Request $request,
+        MovieRepository $movieRepository,
+        SerializerInterface $serializer
+    ): JsonResponse
+    {
+        $movie = $serializer->deserialize($request->getContent(), Movie::class, 'json');
+        $movieRepository->save($movie, true);
+        return $this->json($movie, Response::HTTP_CREATED);
+    }
 }

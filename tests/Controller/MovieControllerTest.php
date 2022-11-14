@@ -7,6 +7,7 @@ use App\Repository\PeopleRepository;
 use App\Tests\AbstractTestCase;
 use Exception;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
+use JsonException;
 
 class MovieControllerTest extends AbstractTestCase
 {
@@ -40,5 +41,35 @@ class MovieControllerTest extends AbstractTestCase
 
         $client->request('GET', '/movies/'. $movie->getId() . '/people');
         self::assertResponseIsSuccessful();
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testCreateMovieDenied(): void
+    {
+        $client = static::createClient();
+        $client->request('POST', '/movies', [],[], ['CONTENT_TYPE' => 'application/json'],
+            json_encode([
+                'title' => 'test create',
+                'duration' => 145
+            ], JSON_THROW_ON_ERROR)
+        );
+        self::assertResponseStatusCodeSame(401);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function testCreateMovieValid(): void
+    {
+        $client = $this->getConnectedClient();
+        $client->request('POST', '/movies', [],[], ['CONTENT_TYPE' => 'application/json'],
+            json_encode([
+                'title' => 'test create',
+                'duration' => 145
+            ], JSON_THROW_ON_ERROR)
+        );
+        self::assertResponseStatusCodeSame(201);
     }
 }
